@@ -60,7 +60,7 @@ void setup() {
   
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-
+  Serial.println(CALIBRATION_FACTOR);
   scale.set_scale(CALIBRATION_FACTOR);   // this value is obtained by calibrating the scale with known weights; see the README for details
   scale.tare();               // reset the scale to 0
 }
