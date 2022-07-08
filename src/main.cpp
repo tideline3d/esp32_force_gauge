@@ -31,7 +31,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BUTTON_PIN 3
 Pushbutton button(BUTTON_PIN);
 
-void displayWeight(int weight){
+void displayWeight(float weight){
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
