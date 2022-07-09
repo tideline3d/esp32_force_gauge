@@ -67,7 +67,15 @@ void setup() {
       Serial.print("IP Address: ");
       Serial.println(WiFi.localIP());
     }
-
+    else
+    {
+      Serial.println("WiFi connection failed to SSID: ");
+      Serial.print(WIFI_SSID);
+      Serial.println("Using WIFI Password: ");
+      Serial.print(WIFI_PW);
+      exit(1);
+    }
+    
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
