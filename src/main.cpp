@@ -1,6 +1,8 @@
 //Library HX711 by Bogdan Necula: https://github.com/bogde/HX711
 // Library: pushbutton by polulu: https://github.com/pololu/pushbutton-arduino
 
+#include <WiFiMulti.h>
+WiFiMulti wifiMulti;
 #include <Arduino.h>
 #include "HX711.h"
 #include "soc/rtc.h"
@@ -53,7 +55,19 @@ void setup() {
   delay(2000);
   display.clearDisplay();
   display.setTextColor(WHITE);
-  
+
+    // Setup wifi
+  WiFi.mode(WIFI_STA);
+  wifiMulti.addAP(WIFI_SSID, WIFI_PW);
+
+  Serial.println("Connecting to wifi...");
+    if(wifiMulti.run() == WL_CONNECTED){
+      Serial.print("Connected to ");
+      Serial.println(WiFi.SSID());
+      Serial.print("IP Address: ");
+      Serial.println(WiFi.localIP());
+    }
+
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
