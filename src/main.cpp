@@ -108,6 +108,12 @@ void setup() {
 
 void loop() {
   // If no Wifi signal, try to reconnect it
+
+  if (button.getSingleDebouncedPress()){
+    Serial.println("Tare reset to 0");
+    scale.tare();
+  }
+  
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("Wifi connection lost");
   }
