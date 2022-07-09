@@ -34,8 +34,6 @@ Point sensor("force_gauge");
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-Pushbutton button(BUTTON_PIN);
-
 void displayWeight(float weight){
   display.clearDisplay();
   display.setTextSize(1);
@@ -84,7 +82,7 @@ void setup() {
     }
 
   // Add constant tags - only once
-  sensor.addTag("device", DEVICE_NAME);
+  sensor.addTag("device", DEVICE_NAME + WiFi.macAddress());
 
   // Check server connection
   if (client.validateConnection()) {
@@ -103,24 +101,15 @@ void setup() {
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
   scale.set_scale(CALIBRATION_FACTOR);   // this value is obtained by calibrating the scale with known weights; see the README for details
-  scale.tare();               // reset the scale to 0
+  Serial.println("Resetting the tare to 0 -- REMOVE ALL OBJECTS ");
+  delay(3000);
+  scale.tare(5);               // reset the scale to 0, measured 5 times to be sure
 }
 
 void loop() {
-  // If no Wifi signal, try to reconnect it
-
-  if (button.getSingleDebouncedPress()){
-    Serial.println("Tare reset to 0");
-    scale.tare();
-  }
-  
+  // If no Wifi signal, try to reconnect it  
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("Wifi connection lost");
-  }
-  
-  if (button.getSingleDebouncedPress()){
-    Serial.print("tare...");
-    scale.tare();
   }
   
   if (scale.wait_ready_timeout(200)) {
