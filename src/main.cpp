@@ -10,6 +10,8 @@ WiFiMulti wifiMulti;
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Pushbutton.h>
+#include <InfluxDbClient.h>
+
 
 #include <config.h> 
 
