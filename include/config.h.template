@@ -1,6 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#define DEVICE_NAME "My_Sensor_Device"
+#define TZ "PST8PDT"
+
+
 #define WIFI_SSID "enter SSID here"
 #define WIFI_PW "wifi pw here"
 #define LOADCELL_DOUT_PIN = 16;

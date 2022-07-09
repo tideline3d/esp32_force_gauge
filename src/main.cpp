@@ -11,6 +11,7 @@ WiFiMulti wifiMulti;
 #include <Adafruit_SSD1306.h>
 #include <Pushbutton.h>
 #include <InfluxDbClient.h>
+#include <InfluxDbCloud.h>
 
 
 #include <config.h> 
@@ -20,6 +21,10 @@ HX711 scale;
 float reading;
 float lastReading;
 
+// Create InfluxDB client instance
+InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert); 
+// Data point
+Point sensor("force_gauge");
 
 //OLED Display
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -77,8 +82,24 @@ void setup() {
       Serial.print(WIFI_PW);
       exit(1);
     }
-    
-  Serial.println("Initializing the scale");
+
+  // Add constant tags - only once
+  sensor.addTag("device", DEVICE_NAME);
+
+  // Check server connection
+  if (client.validateConnection()) {
+    Serial.print("Connected to InfluxDB: ");
+    Serial.println(client.getServerUrl());
+  } else {
+    Serial.print("InfluxDB connection failed: ");
+    Serial.println(client.getLastErrorMessage());
+  }
+
+  //Set our time so our output data is accurate
+  timeSync(TZ, "pool.ntp.org", "time.nis.gov");
+
+  
+  Serial.print("Initializing the scale with Calibration Factor: ");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
   scale.set_scale(CALIBRATION_FACTOR);   // this value is obtained by calibrating the scale with known weights; see the README for details
@@ -86,6 +107,11 @@ void setup() {
 }
 
 void loop() {
+  // If no Wifi signal, try to reconnect it
+  if (wifiMulti.run() != WL_CONNECTED) {
+    Serial.println("Wifi connection lost");
+  }
+  
   if (button.getSingleDebouncedPress()){
     Serial.print("tare...");
     scale.tare();
@@ -103,4 +129,18 @@ void loop() {
   else {
     Serial.println("HX711 not found.");
   }
+    // Store measured value into point
+  sensor.clearFields();
+  // Print the scale reading
+  sensor.addField("weight", reading);
+  // Print what are we exactly writing
+  Serial.print("Writing: ");
+  Serial.println(client.pointToLineProtocol(sensor));
+
+  // Write point
+  if (!client.writePoint(sensor)) {
+    Serial.print("InfluxDB write failed: ");
+    Serial.println(client.getLastErrorMessage());
+  }
+  delay(100);
 }
