@@ -9,15 +9,13 @@
 #include <Adafruit_SSD1306.h>
 #include <Pushbutton.h>
 
-// HX711 circuit wiring
-const int LOADCELL_DOUT_PIN = 10;
-const int LOADCELL_SCK_PIN =SCK;
+#include <config.h> 
+
 
 HX711 scale;
 float reading;
 float lastReading;
-//REPLACE WITH YOUR CALIBRATION FACTOR
-#define CALIBRATION_FACTOR 43374.00
+
 
 //OLED Display
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -27,8 +25,6 @@ float lastReading;
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-//Button
-#define BUTTON_PIN 3
 Pushbutton button(BUTTON_PIN);
 
 void displayWeight(float weight){
