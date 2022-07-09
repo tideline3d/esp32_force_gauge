@@ -1,0 +1,11 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define WIFI_SSID "enter SSID here"
+#define WIFI_PW "wifi pw here"
+#define LOADCELL_DOUT_PIN = 16;
+#define LOADCELL_SCK_PIN = 4;
+//REPLACE WITH YOUR CALIBRATION FACTOR
+#define CALIBRATION_FACTOR 43374.00
+
+#endif

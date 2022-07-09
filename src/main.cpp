@@ -9,15 +9,13 @@
 #include <Adafruit_SSD1306.h>
 #include <Pushbutton.h>
 
-// HX711 circuit wiring
-const int LOADCELL_DOUT_PIN = 10;
-const int LOADCELL_SCK_PIN =SCK;
+#include <config.h> 
+
 
 HX711 scale;
 float reading;
 float lastReading;
-//REPLACE WITH YOUR CALIBRATION FACTOR
-#define CALIBRATION_FACTOR 43374.00
+
 
 //OLED Display
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
