@@ -3,9 +3,28 @@
 
 #define WIFI_SSID "enter SSID here"
 #define WIFI_PW "wifi pw here"
+
 #define LOADCELL_DOUT_PIN 16
 #define LOADCELL_SCK_PIN 4
+
 //REPLACE WITH YOUR CALIBRATION FACTOR
 #define CALIBRATION_FACTOR 43374.00
+
+//REPLACE WITH YOUR BUTTON PIN NUMBER
 #define BUTTON_PIN 3
+
+//InfluxDB Configuration
+#define INFLUXDB_URL "influxdb-url"
+// InfluxDB 2 server or cloud API authentication token (Use: InfluxDB UI -> Load Data -> Tokens -> <select token>)
+#define INFLUXDB_TOKEN "toked-id"
+// InfluxDB 2 organization id (Use: InfluxDB UI -> Settings -> Profile -> <name under tile> )
+#define INFLUXDB_ORG "org"
+// InfluxDB 2 bucket name (Use: InfluxDB UI -> Load Data -> Buckets)
+#define INFLUXDB_BUCKET "bucket"
+
+//REPLACE WITH YOUR DEVICE NAME
+#define DEVICE_NAME "My_Sensor_Device"
+
+//REPLACE WITH YOUR TIME ZONE
+#define TZ "PST8PDT"
 #endif
