@@ -8,6 +8,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Pushbutton.h>
+#include <WiFiMulti.h>
+WiFiMulti wifiMulti;
 
 #include <config.h> 
 
@@ -54,7 +56,27 @@ void setup() {
   delay(2000);
   display.clearDisplay();
   display.setTextColor(WHITE);
-  
+
+      // Setup wifi
+  WiFi.mode(WIFI_STA);
+  wifiMulti.addAP(WIFI_SSID, WIFI_PW);
+
+  Serial.println("Connecting to wifi...");
+    if(wifiMulti.run() == WL_CONNECTED){
+      Serial.print("Connected to ");
+      Serial.println(WiFi.SSID());
+      Serial.print("IP Address: ");
+      Serial.println(WiFi.localIP());
+     }
+  else
+     {
+       Serial.println("WiFi connection failed to SSID: ");
+       Serial.print(WIFI_SSID);
+       Serial.println("Using WIFI Password: ");
+       Serial.print(WIFI_PW);
+       exit(1);
+     }
+
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
