@@ -16,12 +16,12 @@ WiFiMulti wifiMulti;
 
 
 HX711 scale;
-float reading;
-float lastReading;
+float reading; //this can be "int" as well
+float lastReading; //this can be "int" as well
 
 // Create InfluxDB client instance
 InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKEN, InfluxDbCloud2CACert); 
-// Data point
+// Data point for influxDB
 Point sensor("force_gauge");
 
 //OLED Display
@@ -85,8 +85,8 @@ void setup() {
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   Serial.println(CALIBRATION_FACTOR);
-  scale.set_scale(CALIBRATION_FACTOR);   // this value is obtained by calibrating the scale with known weights; see the README for details
-  scale.tare();               // reset the scale to 0
+  scale.set_scale(CALIBRATION_FACTOR);   
+  scale.tare();              
 
   // Add constant tags - only once
   sensor.addTag("device", DEVICE_NAME + WiFi.macAddress());
@@ -109,13 +109,14 @@ void loop() {
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("Wifi connection lost");
    }
+   //Tare button command 
   if (button.getSingleDebouncedPress()){
     Serial.print("tare...");
     scale.tare();
   }
-  
+  //Display weight reading on LED, shows constant numbers until the weight changes
   if (scale.wait_ready_timeout(200)) {
-    reading = (scale.get_units());
+    reading = (scale.get_units()); //add "round" to get whole numbers on display
     Serial.print("Weight: ");
     Serial.println(reading);
     if (reading != lastReading){
