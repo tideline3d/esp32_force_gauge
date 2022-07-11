@@ -26,6 +26,8 @@ float lastReading;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 Pushbutton button(BUTTON_PIN);
+Pushbutton button2(BUTTON_PIN2);
+Pushbutton button3(BUTTON_PIN3);
 
 void displayWeight(float weight){
   display.clearDisplay();
@@ -39,7 +41,7 @@ void displayWeight(float weight){
   display.setTextSize(2);
   display.print(weight);
   display.print(" ");
-  display.print("kg");
+  display.print(UNITS);
   display.display();  
 }
 
@@ -66,9 +68,24 @@ void loop() {
     Serial.print("tare...");
     scale.tare();
   }
-  
+
+  if (button2.getSingleDebouncedPress()){
+    Serial.print("Power Down");
+    delay (2000);
+    scale.power_down();
+  }
+
+  if (button3.getSingleDebouncedPress())
+    reading = (scale.get_units());
+    Serial.print("Max weight: ");
+    Serial.println(reading);
+    if (reading > lastReading){
+      displayWeight(reading); 
+    }
+    lastReading = reading;
+
   if (scale.wait_ready_timeout(200)) {
-    reading = round(scale.get_units());
+    reading = (scale.get_units());
     Serial.print("Weight: ");
     Serial.println(reading);
     if (reading != lastReading){
