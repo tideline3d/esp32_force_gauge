@@ -41,7 +41,7 @@ void displayWeight(float weight){
   display.setTextSize(2);
   display.print(weight);
   display.print(" ");
-  display.print(UNITS);
+  display.print("g");
   display.display();  
 }
 

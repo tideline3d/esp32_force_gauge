@@ -1,11 +1,42 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+//ENTER THE WFID SSID AND PW THAT YOU WILL CONNECT TO 
 #define WIFI_SSID "enter SSID here"
 #define WIFI_PW "wifi pw here"
-#define LOADCELL_DOUT_PIN = 16;
-#define LOADCELL_SCK_PIN = 4;
-//REPLACE WITH YOUR CALIBRATION FACTOR
+
+//REPLACE WITH YOUR PINS CONNECTED TO HX711 board (can be DAT, CLK, SCK depending on your board)
+#define LOADCELL_DOUT_PIN 10
+#define LOADCELL_SCK_PIN SCK
+
+//REPLACE WITH YOUR CALIBRATION FACTOR 
 #define CALIBRATION_FACTOR 43374.00
 
+//REPLACE WITH YOUR BUTTON PIN NUMBER
+#define BUTTON_PIN 3
+#define BUTTON_PIN2 6
+#define BUTTON_PIN3 13
+
+//InfluxDB Configuration
+#define INFLUXDB_URL "influxdb-url"
+
+// InfluxDB 2 server or cloud API authentication token (Use: InfluxDB UI -> Load Data -> Tokens -> <select token>)
+#define INFLUXDB_TOKEN "toked-id"
+
+// InfluxDB 2 organization id (Use: InfluxDB UI -> Settings -> Profile -> <name under tile> )
+#define INFLUXDB_ORG "org"
+
+// InfluxDB 2 bucket name (Use: InfluxDB UI -> Load Data -> Buckets)
+#define INFLUXDB_BUCKET "bucket"
+
+//REPLACE WITH YOUR DEVICE NAME
+#define DEVICE_NAME "My_Sensor_Device"
+
+/*REPLACE WITH YOUR TIME ZONE (according to https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html)
+ Examples:
+  Pacific Time: "PST8PDT"
+  Eastern: "EST5EDT"
+  Japanesse: "JST-9"
+  Central Europe: "CET-1CEST,M3.5.0,M10.5.0/3"*/
+#define TZ "PST8PDT"
 #endif
