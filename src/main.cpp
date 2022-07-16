@@ -47,7 +47,7 @@ void displayWeight(float weight){
   display.setTextSize(2);
   display.print(weight);
   display.print(" ");
-  display.print("kg");
+  display.print("g");
   display.display();  
 }
 
@@ -84,7 +84,8 @@ void setup() {
 
   Serial.println("Initializing the scale");
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-  Serial.println(CALIBRATION_FACTOR);
+  Serial.println("Calibration factor:");
+  Serial.print(CALIBRATION_FACTOR);
   scale.set_scale(CALIBRATION_FACTOR);   
   scale.tare();              
 
@@ -132,7 +133,6 @@ void loop() {
    // Print the scale reading
    sensor.addField("weight", reading);
    // Print what are we exactly writing
-   Serial.print("Writing: ");
    Serial.println(client.pointToLineProtocol(sensor));
 
    // Write point
@@ -140,5 +140,5 @@ void loop() {
      Serial.print("InfluxDB write failed: ");
      Serial.println(client.getLastErrorMessage());
    }
-   delay(100);
+  
 }
