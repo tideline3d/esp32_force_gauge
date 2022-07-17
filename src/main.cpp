@@ -69,21 +69,6 @@ void loop() {
     scale.tare();
   }
 
-  if (button2.getSingleDebouncedPress()){
-    Serial.print("Power Down");
-    delay (2000);
-    scale.power_down();
-  }
-
-  if (button3.getSingleDebouncedPress())
-    reading = (scale.get_units());
-    Serial.print("Max weight: ");
-    Serial.println(reading);
-    if (reading > lastReading){
-      displayWeight(reading); 
-    }
-    lastReading = reading;
-
   if (scale.wait_ready_timeout(200)) {
     reading = (scale.get_units());
     Serial.print("Weight: ");
